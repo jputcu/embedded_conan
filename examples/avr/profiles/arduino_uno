@@ -6,16 +6,24 @@ arch=avr
 arch.mcu={{ mcu }}
 build_type=MinSizeRel
 compiler=gcc
-compiler.version=7
+compiler.version=15
 compiler.libcxx=libstdc++11
-compiler.cppstd=17
+compiler.cppstd=23
+# Declared in settings_user.yml, so LTO binaries get their own package_id
+compiler.lto=True
 
 [tool_requires]
-microchipavrgcc/3.7.0
+microchipavrgcc/4.0.0
 avr-libstdcpp/1.0.1
 
 [conf]
 tools.build:cflags+=["-mmcu={{ mcu }}", "-funsigned-char", "-mrelax", "-ffunction-sections", "-fdata-sections", "-mcall-prologues"]
 tools.build:cxxflags+=["-mmcu={{ mcu }}", "-funsigned-char", "-mrelax", "-ffunction-sections", "-fdata-sections", "-mcall-prologues", "-fno-rtti", "-fno-exceptions", "-fno-threadsafe-statics"]
+# Symbols for avr-gdb: the ELF grows, the flashed image does not
+tools.build:cflags+=["-g"]
+tools.build:cxxflags+=["-g"]
 tools.build:defines+=["F_CPU=16000000"]
 tools.build:exelinkflags+=["-mmcu={{ mcu }}", "-Wl,--gc-sections", "-mrelax"]
+
+# LTO: CMake IPO compiles and links with -flto, archives with avr-gcc-ar
+tools.cmake.cmaketoolchain:extra_variables*={"CMAKE_INTERPROCEDURAL_OPTIMIZATION": "ON"}

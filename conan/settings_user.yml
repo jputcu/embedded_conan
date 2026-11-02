@@ -1,3 +1,6 @@
 arch:
     avr:
         mcu: [None, atmega328p]
+compiler:
+    gcc:
+        lto: [null, False, True]

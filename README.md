@@ -1,6 +1,7 @@
 Description
 ===========
-Use conan to provide a C++ toolchain, including standard C++ library.
+Conan recipes for embedded development: cross toolchains, the AVR C++ standard library and
+portable sources such as the FreeRTOS kernel.
 
 Install toolchain and C++ standard library
 ------------------------------------------
@@ -8,27 +9,25 @@ Install toolchain and C++ standard library
 This repository is origanized to allow it to be used as a local conan index.
 
 ~~~~
-$ git clone https://github.com/jputcu/avr_conan.git
-$ conan remote add avr_center ./avr_conan
-$ conan search "*" -r avr_center
-Found 13 pkg/version recipes matching * in avr_center
-avr_center
+$ git clone https://github.com/jputcu/embedded_conan.git
+$ conan remote add embedded ./embedded_conan
+$ conan search "*" -r embedded
+Found 17 pkg/version recipes matching * in embedded
+embedded
   avr-libstdcpp
     avr-libstdcpp/1.0.1
+  ctngavrgcc
+    ctngavrgcc/16.2.0
+  freertos-kernel
+    freertos-kernel/11.3.1
+    freertos-kernel/11.3.2
   microchipavrgcc
     microchipavrgcc/3.7.0
     microchipavrgcc/4.0.0
   zakkembleavrgcc
     zakkembleavrgcc/8.1.0
-    zakkembleavrgcc/8.3.0
-    zakkembleavrgcc/9.2.0
-    zakkembleavrgcc/10.1.0
-    zakkembleavrgcc/11.1.0
-    zakkembleavrgcc/12.1.0
-    zakkembleavrgcc/13.2.0
-    zakkembleavrgcc/14.1.0
-    zakkembleavrgcc/15.1.0
-    zakkembleavrgcc/15.2.0
+    ...
+    zakkembleavrgcc/16.1.0
 ~~~~
 
 The correct packages will be installed as dependency by the profile.
@@ -46,52 +45,50 @@ $ conan create recipes/ctngavrgcc/all --version 16.2.0 --build-require
 Provide the conan AVR settings
 ------------------------------
 
-Install `conan/settings_user.yml` into `~/.conan2/`.
+Install `conan/settings_user.yml` into `~/.conan2/`: it declares the MCU and `compiler.lto`.
 
 Compile the example project
 ---------------------------
+The example builds like our firmware: `MinSizeRel` with LTO and `-g` from the profile, so the
+image is optimized and the ELF still has the symbols for `avr-gdb`. A `Debug` build (`-O0`) is not shown:
+on AVR it rarely fits and breaks `<util/delay.h>`.
+
 ~~~~
-$ cd blink
-$ conan build . -pr:h ../conan/profiles/arduino_uno --build missing
+$ cd examples/avr/blink
+$ conan build . -pr:h ../profiles/arduino_uno --build missing
 ...
-$ conan build . -pr:h ../conan/profiles/arduino_uno -s build_type=Debug --build missing
-...
+$ file build/atmega328p/MinSizeRel/blink.elf
+build/atmega328p/MinSizeRel/blink.elf: ELF 32-bit LSB executable, Atmel AVR 8-bit, version 1 (SYSV), statically linked, with debug_info, not stripped
 ~~~~
 
-Advanced editors, like Clion, can use `cmake presets`, now we have:
+Advanced editors, like Clion, can use `cmake presets`:
 ~~~~
+$ conan install . -pr:h ../profiles/arduino_uno --build missing
+...
 $ cmake --list-presets
 Available configure presets:
 
   "conan-atmega328p-minsizerel" - 'conan-atmega328p-minsizerel' config
-  "conan-atmega328p-debug"      - 'conan-atmega328p-debug' config
 ~~~~
 
+Or by hand, in the toolchain's environment:
 ~~~~
-$ conan install . -pr:h ../conan/profiles/arduino_uno --build missing
+$ source build/atmega328p/MinSizeRel/generators/conanbuild.sh
+$ cmake --preset conan-atmega328p-minsizerel
 ...
-$ source build/Debug/generators/conanbuildenv-debug-avr.sh
+$ cmake --build --preset conan-atmega328p-minsizerel --verbose
 ...
-$ cmake --preset conan-debug
-...
-$ cmake --build --preset conan-debug --verbose
-...
-$ source build/Debug/generators/deactivate_conanbuildenv-debug-avr.sh
+$ source build/atmega328p/MinSizeRel/generators/deactivate_conanbuild.sh
 Restoring environment
-~~~~
-
-~~~~
-$ file build/Debug/blink.elf
-build/Debug/blink.elf: ELF 32-bit LSB executable, Atmel AVR 8-bit, version 1 (SYSV), statically linked, with debug_info, not stripped
 ~~~~
 
 Run correct gdb
 ---------------
 Since conan-2.23 we can easily call the correct gdb:
 ~~~~
-$ conan run "avr-gdb --version" -pr ../conan/profiles/arduino_uno
+$ conan run "avr-gdb --version" -pr ../profiles/arduino_uno
 Installing and building dependencies, this might take a while...
-GNU gdb (AVR_8_bit_GNU_Toolchain_3.7.0_1796) 7.8
+GNU gdb (AVR_8_bit_GNU_Toolchain_4.0.0_52) 16.3
 ...
 ~~~~
 
