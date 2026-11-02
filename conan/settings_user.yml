@@ -1,6 +1,7 @@
 arch:
     avr:
         mcu: [None, atmega328p]
+    cortex-m0plus:
 compiler:
     gcc:
         lto: [null, False, True]

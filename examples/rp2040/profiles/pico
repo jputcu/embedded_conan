@@ -1,0 +1,15 @@
+# Raspberry Pi Pico (RP2040, Cortex-M0+) with the distribution's arm-none-eabi-gcc 14 on the PATH
+[settings]
+os=baremetal
+arch=cortex-m0plus
+build_type=MinSizeRel
+compiler=gcc
+compiler.version=14
+compiler.libcxx=libstdc++11
+compiler.cppstd=23
+
+[conf]
+tools.build:compiler_executables={"c": "arm-none-eabi-gcc", "cpp": "arm-none-eabi-g++", "asm": "arm-none-eabi-gcc"}
+# Symbols for gdb: the ELF grows, the flashed image does not
+tools.build:cflags+=["-g"]
+tools.build:cxxflags+=["-g"]

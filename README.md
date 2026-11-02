@@ -42,10 +42,11 @@ only, about an hour). The component versions are in `recipes/ctngavrgcc/all/defc
 $ conan create recipes/ctngavrgcc/all --version 16.2.0 --build-require
 ~~~~
 
-Provide the conan AVR settings
+Provide the conan settings
 ------------------------------
 
-Install `conan/settings_user.yml` into `~/.conan2/`: it declares the MCU and `compiler.lto`.
+Install `conan/settings_user.yml` into `~/.conan2/`: it declares the AVR MCU, the `cortex-m0plus`
+arch and `compiler.lto`.
 
 Compile the example project
 ---------------------------
@@ -91,6 +92,22 @@ Installing and building dependencies, this might take a while...
 GNU gdb (AVR_8_bit_GNU_Toolchain_4.0.0_52) 16.3
 ...
 ~~~~
+
+Compile the RP2040 example
+--------------------------
+`pico-sdk` comes from this index as sources, without its submodules (no USB, no wireless). The
+compiler is `arm-none-eabi-gcc` 14 on the PATH (Debian: `gcc-arm-none-eabi`), so it is not pinned.
+
+~~~~
+$ cd examples/rp2040/blink
+$ conan build . -pr:h ../profiles/pico --build missing
+...
+$ ls build/cortex-m0plus/MinSizeRel/blink.*
+build/cortex-m0plus/MinSizeRel/blink.bin  build/cortex-m0plus/MinSizeRel/blink.elf  build/cortex-m0plus/MinSizeRel/blink.hex
+~~~~
+
+There is no UF2: the SDK makes it with picotool, which it would download and build. Flash the ELF
+over SWD, e.g. with a Raspberry Pi Debug Probe and OpenOCD.
 
 Potential
 =========

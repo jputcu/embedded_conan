@@ -1,0 +1,4 @@
+sources:
+  "2.3.1":
+    url: "https://github.com/raspberrypi/pico-sdk/releases/download/2.3.1/pico-sdk-2.3.1.tar.gz"
+    sha256: "4cd9f1f36feb34b6853ca866b5e0d977e3d344a361b9b7c94ae383693303591a"
