@@ -50,8 +50,8 @@ and `cortex-m33` archs and `compiler.lto`.
 
 Compile the example project
 ---------------------------
-The example builds like our firmware: `MinSizeRel` with LTO and `-g` from the profile, so the
-image is optimized and the ELF still has the symbols for `avr-gdb`. A `Debug` build (`-O0`) is not shown:
+The example builds `MinSizeRel` with LTO and `-g` from the profile, so the image is optimized
+and the ELF still has the symbols for `avr-gdb`. A `Debug` build (`-O0`) is not shown:
 on AVR it rarely fits and breaks `<util/delay.h>`.
 
 ~~~~
