@@ -136,8 +136,11 @@ Offer HALs
 
 AVR friendly libraries
 ----------------------
-* ETL
-* ArduinoJson
+From ConanCenter, at the versions used on AVR:
+
+* `etl/20.48.1`: [ETL](https://github.com/ETLCPP/etl), containers and algorithms without heap
+* `arduinojson/6.21.4`: [ArduinoJson](https://arduinojson.org), ConanCenter's newest 6.x; version 7 dropped
+  the fixed-size `StaticJsonDocument` and allocates from the heap by default
 
 AVR architecture
 ----------------
