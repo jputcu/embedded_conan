@@ -1,0 +1,5 @@
+# No release has the W6100 yet (v3.2.0 does not): a master commit, named after its date
+sources:
+  "cci.20261008":
+    url: "https://github.com/Wiznet/ioLibrary_Driver/archive/e1791974e76d0b00cbac9e349ed92477b8d41386.tar.gz"
+    sha256: "a49b5fb4b2f1cb12d2824560c1accc846bd29023a7220a8ab69591f1def89d24"
