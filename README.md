@@ -46,7 +46,7 @@ Provide the conan settings
 ------------------------------
 
 Install `conan/settings_user.yml` into `~/.conan2/`: it declares the AVR MCU, the `cortex-m0plus`
-arch and `compiler.lto`.
+and `cortex-m33` archs and `compiler.lto`.
 
 Compile the example project
 ---------------------------
@@ -93,21 +93,30 @@ GNU gdb (AVR_8_bit_GNU_Toolchain_4.0.0_52) 16.3
 ...
 ~~~~
 
-Compile the RP2040 example
---------------------------
-`pico-sdk` comes from this index as sources, without its submodules (no USB, no wireless). The
-compiler is `arm-none-eabi-gcc` 14 on the PATH (Debian: `gcc-arm-none-eabi`), so it is not pinned.
+Compile the Pico example
+------------------------
+One blink for the Raspberry Pi Pico (RP2040) and Pico 2 (RP2350, ARM secure mode): the profile's
+arch picks the SDK platform and board. `pico-sdk` comes from this index as sources, without its
+submodules (no USB, no wireless). The profiles take it as a `tool_requires`: its toolchain file then
+configures every CMake package built with them, so a library gets the SDK's compiler flags too. The compiler is `arm-none-eabi-gcc` 14 on the PATH (Debian:
+`gcc-arm-none-eabi`), so it is not pinned.
 
 ~~~~
-$ cd examples/rp2040/blink
+$ cd examples/pico/blink
 $ conan build . -pr:h ../profiles/pico --build missing
 ...
-$ ls build/cortex-m0plus/MinSizeRel/blink.*
-build/cortex-m0plus/MinSizeRel/blink.bin  build/cortex-m0plus/MinSizeRel/blink.elf  build/cortex-m0plus/MinSizeRel/blink.hex
+$ conan build . -pr:h ../profiles/pico2 --build missing
+...
+$ ls build/*/Release/blink.uf2
+build/cortex-m0plus/Release/blink.uf2  build/cortex-m33/Release/blink.uf2
 ~~~~
 
-There is no UF2: the SDK makes it with picotool, which it would download and build. Flash the ELF
-over SWD, e.g. with a Raspberry Pi Debug Probe and OpenOCD.
+The build types follow the SDK: `Release` (`-O3`, the SDK adds `-g`) by default, and `Debug`
+(`-Og`, still small enough to step through with a debug probe) with `-s build_type=Debug`.
+
+The UF2 comes from the `picotool` package (Raspberry Pi's prebuilt binary; on Linux it needs the
+system `libusb-1.0`). Hold BOOTSEL while plugging in the board and copy `blink.uf2` to the drive
+that appears.
 
 Potential
 =========

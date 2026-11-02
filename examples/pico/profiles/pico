@@ -1,0 +1,22 @@
+# Raspberry Pi Pico (RP2040, Cortex-M0+) with the distribution's arm-none-eabi-gcc 14 on the PATH
+[settings]
+os=baremetal
+arch=cortex-m0plus
+build_type=Release
+compiler=gcc
+compiler.version=14
+compiler.libcxx=libstdc++11
+compiler.cppstd=23
+
+[tool_requires]
+# Its toolchain file, with the SDK's compiler flags, for every CMake package of this core
+pico-sdk/2.3.1
+
+[conf]
+tools.build:compiler_executables={"c": "arm-none-eabi-gcc", "cpp": "arm-none-eabi-g++", "asm": "arm-none-eabi-gcc"}
+# No -g: the SDK adds it to Release builds itself (PICO_DEBUG_INFO_IN_RELEASE)
+# Conan leaves conf out of the package_id; without this a flag change here reuses old binaries
+tools.info.package_id:confs=["tools.build:cflags", "tools.build:cxxflags", "tools.build:exelinkflags"]
+# The SDK sets these per target (pico_cxx_options, pico_standard_link), not in its toolchain file
+tools.build:cflags+=["-ffunction-sections", "-fdata-sections"]
+tools.build:cxxflags+=["-ffunction-sections", "-fdata-sections", "-fno-exceptions", "-fno-unwind-tables", "-fno-rtti", "-fno-use-cxa-atexit"]
