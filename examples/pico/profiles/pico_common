@@ -1,0 +1,19 @@
+# Shared by the Pico boards, with the distribution's arm-none-eabi-gcc 14 on the PATH.
+# Include it from a board profile, which sets arch
+[settings]
+os=baremetal
+build_type=Release
+compiler=gcc
+compiler.version=14
+compiler.libcxx=libstdc++11
+compiler.cppstd=23
+
+[tool_requires]
+# Its toolchain file and compiler flags, for every CMake package of this core
+pico-sdk/2.3.1
+
+[conf]
+tools.build:compiler_executables={"c": "arm-none-eabi-gcc", "cpp": "arm-none-eabi-g++", "asm": "arm-none-eabi-gcc"}
+# No -g: the SDK adds it to Release builds itself (PICO_DEBUG_INFO_IN_RELEASE)
+# Conan leaves conf out of the package_id; without this a flag change here reuses old binaries
+tools.info.package_id:confs=["tools.build:cflags", "tools.build:cxxflags", "tools.build:exelinkflags"]

@@ -17,6 +17,9 @@ class PicoSdkConan(ConanFile):
     homepage = "https://github.com/raspberrypi/pico-sdk"
     package_type = "header-library"  # nothing is compiled here, see package_info()
     no_copy_source = True
+    # As a tool_requires its flags are not in the consumers' conf, so it is in their package_id
+    # itself: an SDK upgrade or a flag change here rebuilds every package built with it
+    build_mode = "recipe_revision_mode"
 
     def source(self):
         # url and sha256: a download that changed upstream fails instead of slipping in
@@ -46,3 +49,7 @@ class PicoSdkConan(ConanFile):
             toolchain = os.path.join(self.package_folder, "toolchain", f"{self.settings_target.arch}.cmake")
             self.conf_info.append("tools.cmake.cmaketoolchain:user_toolchain", toolchain)
             self.conf_info.define("tools.cmake.cmaketoolchain:system_name", "PICO")
+            # What the SDK sets per target (pico_cxx_options, pico_standard_link), not in its toolchain
+            self.conf_info.append("tools.build:cflags", ["-ffunction-sections", "-fdata-sections"])
+            self.conf_info.append("tools.build:cxxflags", ["-ffunction-sections", "-fdata-sections", "-fno-exceptions",
+                                                           "-fno-unwind-tables", "-fno-rtti", "-fno-use-cxa-atexit"])
