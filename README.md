@@ -1,7 +1,23 @@
 Description
 ===========
-Conan recipes for embedded development: cross toolchains, the AVR C++ standard library and
-portable sources such as the FreeRTOS kernel.
+Conan recipes for embedded development: cross toolchains, the AVR C++ standard library, the
+Raspberry Pi Pico SDK and its tools, and portable sources such as the FreeRTOS kernel.
+
+Recipes
+-------
+
+| Recipe | Versions | What |
+|--------|----------|------|
+| [`microchipavrgcc`](https://www.microchip.com/en-us/tools-resources/develop/microchip-studio/gcc-compilers) | 3.7.0, 4.0.0 | Microchip's prebuilt AVR toolchain (avr-gcc 7, 15) |
+| [`zakkembleavrgcc`](https://github.com/ZakKemble/avr-gcc-build) | 8.1.0 ... 16.1.0 | Zak Kemble's prebuilt avr-gcc builds |
+| [`ctngavrgcc`](https://crosstool-ng.github.io) | 16.2.0 | avr-gcc with a freestanding libstdc++, built from source by crosstool-ng |
+| [`avr-libstdcpp`](https://github.com/modm-io/avr-libstdcpp) | 1.0.1 | A C++ standard library for AVR (modm-io), header-only |
+| [`arm-gnu-toolchain`](https://gitlab.arm.com/tooling/gnu-toolchains-for-arm) | 15.3.rel2 | Arm's prebuilt bare-metal toolchain (arm-none-eabi) |
+| [`pico-sdk`](https://github.com/raspberrypi/pico-sdk) | 2.3.1 | Raspberry Pi Pico SDK as sources (no submodules); its toolchain and flags for RP2040/RP2350 |
+| [`picotool`](https://github.com/raspberrypi/picotool) | 2.3.1 | Raspberry Pi's prebuilt picotool: UF2 output, signing, flashing |
+| [`pioasm`](https://github.com/raspberrypi/pico-sdk/tree/master/tools/pioasm) | 2.3.1 | Raspberry Pi's prebuilt PIO assembler |
+| [`freertos-kernel`](https://github.com/FreeRTOS/FreeRTOS-Kernel) | 11.3.1, 11.3.2 | FreeRTOS kernel as sources, built by the application with its own config and port |
+| [`wiznet-iolibrary`](https://github.com/Wiznet/ioLibrary_Driver) | cci.20261008 | WIZnet's ioLibrary Ethernet driver for one W5x00/W6x00 chip |
 
 Install toolchain and C++ standard library
 ------------------------------------------
@@ -12,22 +28,8 @@ This repository is origanized to allow it to be used as a local conan index.
 $ git clone https://github.com/jputcu/embedded_conan.git
 $ conan remote add embedded ./embedded_conan
 $ conan search "*" -r embedded
-Found 17 pkg/version recipes matching * in embedded
-embedded
-  avr-libstdcpp
-    avr-libstdcpp/1.0.1
-  ctngavrgcc
-    ctngavrgcc/16.2.0
-  freertos-kernel
-    freertos-kernel/11.3.1
-    freertos-kernel/11.3.2
-  microchipavrgcc
-    microchipavrgcc/3.7.0
-    microchipavrgcc/4.0.0
-  zakkembleavrgcc
-    zakkembleavrgcc/8.1.0
-    ...
-    zakkembleavrgcc/16.1.0
+Found 22 pkg/version recipes matching * in embedded
+...
 ~~~~
 
 The correct packages will be installed as dependency by the profile.
