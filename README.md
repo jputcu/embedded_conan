@@ -96,10 +96,10 @@ GNU gdb (AVR_8_bit_GNU_Toolchain_4.0.0_52) 16.3
 Compile the Pico example
 ------------------------
 One blink for the Raspberry Pi Pico (RP2040) and Pico 2 (RP2350, ARM secure mode): the profile's
-arch picks the SDK platform and board. `pico-sdk` comes from this index as sources, without its
-submodules (no USB, no wireless). The profiles take it as a `tool_requires`: its toolchain file then
-configures every CMake package built with them, so a library gets the SDK's compiler flags too. The compiler is `arm-none-eabi-gcc` 14 on the PATH (Debian:
-`gcc-arm-none-eabi`), so it is not pinned.
+arch picks the SDK platform and board. The compiler is Arm's `arm-gnu-toolchain` and `pico-sdk` comes
+as sources, without its submodules (no USB, no wireless); both from this index and pinned. The
+profiles take them as `tool_requires`: the SDK's toolchain file then configures every CMake package
+built with them, so a library gets the SDK's compiler flags too.
 
 ~~~~
 $ cd examples/pico/blink

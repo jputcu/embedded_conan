@@ -1,0 +1,18 @@
+# Arm's prebuilt arm-none-eabi toolchain; sha256 from Arm's .sha256asc next to each download
+sources:
+  "15.3.rel2":
+    Linux:
+      x86_64:
+        url: "https://gitlab.arm.com/api/v4/projects/tooling%2Fgnu-toolchains-for-arm/packages/generic/gnu-toolchain/15.3.rel2/arm-gnu-toolchain-15.3.rel2-x86_64-arm-none-eabi.tar.xz"
+        sha256: "463df9665c246fa13bab2102115bbf83440661b6eb70b44f3dfd4712ca30037a"
+      armv8:
+        url: "https://gitlab.arm.com/api/v4/projects/tooling%2Fgnu-toolchains-for-arm/packages/generic/gnu-toolchain/15.3.rel2/arm-gnu-toolchain-15.3.rel2-aarch64-arm-none-eabi.tar.xz"
+        sha256: "a0dc18893171d39dec82fd8d57eeab3da836fd3df4b61978db3eccbf4a6bb948"
+    Macos:
+      armv8:
+        url: "https://gitlab.arm.com/api/v4/projects/tooling%2Fgnu-toolchains-for-arm/packages/generic/gnu-toolchain/15.3.rel2/arm-gnu-toolchain-15.3.rel2-darwin-arm64-arm-none-eabi.tar.xz"
+        sha256: "f011e4832046155f06408dda6b252b21b139a8159c8529802227371f06656c60"
+    Windows:
+      x86_64:
+        url: "https://gitlab.arm.com/api/v4/projects/tooling%2Fgnu-toolchains-for-arm/packages/generic/gnu-toolchain/15.3.rel2/arm-gnu-toolchain-15.3.rel2-mingw-w64-x86_64-arm-none-eabi.zip"
+        sha256: "0daff4141d4f62ad1e9794ca8bd430ef730f07fd78f6d71d2ffdffc21db8cb9e"
