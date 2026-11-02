@@ -1,0 +1,21 @@
+# Raspberry Pi's prebuilt binaries, from the pico-sdk-tools release that goes with the SDK
+sources:
+  "2.3.1":
+    Linux:
+      x86_64:
+        url: "https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.3.1-0/pico-sdk-tools-2.3.1-x86_64-lin.tar.gz"
+        sha256: "39758f147a8e615f8c77586ce3c85a25c6728910a86612eea184fc86eb606992"
+      armv8:
+        url: "https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.3.1-0/pico-sdk-tools-2.3.1-aarch64-lin.tar.gz"
+        sha256: "108a3e1d15ea8ace1a7efc8751b36d0a2b5e1d8e1cf230ee2f061e3c8f1c8276"
+    Macos:
+      x86_64:
+        url: "https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.3.1-0/pico-sdk-tools-2.3.1-mac.zip"
+        sha256: "7d4c8966f8f47b08c7b2aaf513648f321a15753fab6e8f30bd79d1e6c921aa2f"
+      armv8:
+        url: "https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.3.1-0/pico-sdk-tools-2.3.1-mac.zip"
+        sha256: "7d4c8966f8f47b08c7b2aaf513648f321a15753fab6e8f30bd79d1e6c921aa2f"
+    Windows:
+      x86_64:
+        url: "https://github.com/raspberrypi/pico-sdk-tools/releases/download/v2.3.1-0/pico-sdk-tools-2.3.1-x64-win.zip"
+        sha256: "c5d18dae371eb088da61a038ccf56a23fbd19171a319461efebeae1646c06ade"
