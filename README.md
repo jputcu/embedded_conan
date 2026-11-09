@@ -19,6 +19,17 @@ Recipes
 | [`freertos-kernel`](https://github.com/FreeRTOS/FreeRTOS-Kernel) | 11.3.1, 11.3.2 | FreeRTOS kernel as sources, built by the application with its own config and port |
 | [`wiznet-iolibrary`](https://github.com/Wiznet/ioLibrary_Driver) | cci.20261008 | WIZnet's ioLibrary Ethernet driver for one W5x00/W6x00 chip |
 
+From ConanCenter
+----------------
+
+Not in this index: these come straight from [ConanCenter](https://conan.io/center), at the versions
+that work on AVR and the Pico.
+
+| Package | Version | What |
+|---------|---------|------|
+| [`etl`](https://conan.io/center/recipes/etl) | 20.48.1 | [ETL](https://github.com/ETLCPP/etl), containers and algorithms without heap |
+| [`arduinojson`](https://conan.io/center/recipes/arduinojson) | 6.21.4 | [ArduinoJson](https://arduinojson.org), ConanCenter's newest 6.x; version 7 dropped the fixed-size `StaticJsonDocument` and allocates from the heap by default |
+
 Install toolchain and C++ standard library
 ------------------------------------------
 
@@ -135,14 +146,6 @@ Other compiler
 Offer HALs
 ----------
 * TODO
-
-AVR friendly libraries
-----------------------
-From ConanCenter, at the versions used on AVR:
-
-* `etl/20.48.1`: [ETL](https://github.com/ETLCPP/etl), containers and algorithms without heap
-* `arduinojson/6.21.4`: [ArduinoJson](https://arduinojson.org), ConanCenter's newest 6.x; version 7 dropped
-  the fixed-size `StaticJsonDocument` and allocates from the heap by default
 
 AVR architecture
 ----------------
