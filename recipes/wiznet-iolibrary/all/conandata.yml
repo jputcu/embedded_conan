@@ -3,3 +3,20 @@ sources:
   "cci.20261008":
     url: "https://github.com/Wiznet/ioLibrary_Driver/archive/e1791974e76d0b00cbac9e349ed92477b8d41386.tar.gz"
     sha256: "a49b5fb4b2f1cb12d2824560c1accc846bd29023a7220a8ab69591f1def89d24"
+# Our fixes on top of the master commit, until upstream takes them
+patches:
+  "cci.20261008":
+    - patch_file: "patches/0001-recv-nonblock-returns-busy-with-data.patch"
+      patch_description: "W5x00: non-blocking recv() returned SOCK_BUSY while data was waiting"
+      patch_type: "bugfix"
+      patch_source: "https://github.com/Wiznet/ioLibrary_Driver/pull/183"
+      base_path: "iolibrary"
+    - patch_file: "patches/0002-socket-w6x00-nonblock-flag.patch"
+      patch_description: "W6x00: socket() ignored SF_IO_NONBLOCK (and took SF_FORCE_ARP for it)"
+      patch_type: "bugfix"
+      patch_source: "https://github.com/Wiznet/io6Library/issues/22"
+      base_path: "iolibrary"
+    - patch_file: "patches/0003-send-wait-sendok-before-writing.patch"
+      patch_description: "W6x00: non-blocking send() wrote the data before SOCK_BUSY, so a retry sent it twice"
+      patch_type: "bugfix"
+      base_path: "iolibrary"

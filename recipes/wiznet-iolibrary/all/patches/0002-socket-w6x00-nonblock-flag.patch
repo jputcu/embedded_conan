@@ -1,0 +1,13 @@
+diff --git a/Ethernet/socket.c b/Ethernet/socket.c
+index 26070b1..a4b5dc9 100644
+--- a/Ethernet/socket.c
++++ b/Ethernet/socket.c
+@@ -349,7 +349,7 @@ int8_t socket(uint8_t sn, uint8_t protocol, uint16_t port, uint8_t flag) {
+ #ifndef IPV6_AVAILABLE
+     sock_io_mode |= ((flag & SF_IO_NONBLOCK) << sn);
+ #else
+-    sock_io_mode |= ((flag & (SF_IO_NONBLOCK >> 3)) << sn);
++    sock_io_mode |= (((flag & SF_IO_NONBLOCK) >> 3) << sn);
+ #endif
+     sock_is_sending &= ~(1 << sn);
+     sock_remained_size[sn] = 0;

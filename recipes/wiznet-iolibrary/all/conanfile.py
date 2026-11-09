@@ -2,7 +2,7 @@ import os
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
-from conan.tools.files import copy, get
+from conan.tools.files import apply_conandata_patches, copy, export_conandata_patches, get
 
 
 class WiznetIoLibraryConan(ConanFile):
@@ -20,6 +20,9 @@ class WiznetIoLibraryConan(ConanFile):
     default_options = {"chip": "W6100", "prefixed_exports": True}
     exports_sources = "CMakeLists.txt"
 
+    def export_sources(self):
+        export_conandata_patches(self)
+
     def configure(self):
         self.settings.rm_safe("compiler.libcxx")  # C only
         self.settings.rm_safe("compiler.cppstd")
@@ -30,6 +33,7 @@ class WiznetIoLibraryConan(ConanFile):
     def source(self):
         # url and sha256: a download that changed upstream fails instead of slipping in
         get(self, **self.conan_data["sources"][self.version], strip_root=True, destination="iolibrary")
+        apply_conandata_patches(self)
 
     def generate(self):
         tc = CMakeToolchain(self)

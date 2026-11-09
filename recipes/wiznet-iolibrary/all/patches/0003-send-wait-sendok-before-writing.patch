@@ -1,0 +1,49 @@
+diff --git a/Ethernet/socket.c b/Ethernet/socket.c
+index 26070b1..ddc5b94 100644
+--- a/Ethernet/socket.c
++++ b/Ethernet/socket.c
+@@ -558,6 +558,22 @@ int32_t send(uint8_t sn, uint8_t * buf, uint16_t len) {
+         }
+     }
+ #endif
++    // Previous SEND first: a SOCK_BUSY after wiz_send_data() made the retry write the data twice
++    if (sock_is_sending & (1 << sn)) {
++        while (!(getSn_IR(sn) & Sn_IR_SENDOK)) {
++            tmp = getSn_SR(sn);
++            if ((tmp != SOCK_ESTABLISHED) && (tmp != SOCK_CLOSE_WAIT)) {
++                if ((tmp == SOCK_CLOSED) || (getSn_IR(sn) & Sn_IR_TIMEOUT)) {
++                    close(sn);
++                }
++                return SOCKERR_SOCKSTATUS;
++            }
++            if (sock_io_mode & (1 << sn)) {
++                return SOCK_BUSY;
++            }
++        }
++        setSn_IR(sn, Sn_IR_SENDOK);
++    }
+     freesize = getSn_TxMAX(sn);
+     if (len > freesize) {
+         len = freesize;    // check size not to exceed MAX size.
+@@ -587,21 +603,6 @@ int32_t send(uint8_t sn, uint8_t * buf, uint16_t len) {
+ #if _WIZCHIP_ == 5300
+     setSn_TX_WRSR(sn, len);
+ #endif
+-    if (sock_is_sending & (1 << sn)) {
+-        while (!(getSn_IR(sn) & Sn_IR_SENDOK)) {
+-            tmp = getSn_SR(sn);
+-            if ((tmp != SOCK_ESTABLISHED) && (tmp != SOCK_CLOSE_WAIT)) {
+-                if ((tmp == SOCK_CLOSED) || (getSn_IR(sn) & Sn_IR_TIMEOUT)) {
+-                    close(sn);
+-                }
+-                return SOCKERR_SOCKSTATUS;
+-            }
+-            if (sock_io_mode & (1 << sn)) {
+-                return SOCK_BUSY;
+-            }
+-        }
+-        setSn_IR(sn, Sn_IR_SENDOK);
+-    }
+     setSn_CR(sn, Sn_CR_SEND);
+ 
+     while (getSn_CR(sn));  // wait to process the command...
