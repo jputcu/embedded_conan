@@ -13,7 +13,7 @@ Recipes
 | [`ctngavrgcc`](https://crosstool-ng.github.io) | 16.2.0 | avr-gcc with a freestanding libstdc++, built from source by crosstool-ng |
 | [`avr-libstdcpp`](https://github.com/modm-io/avr-libstdcpp) | 1.0.1 | A C++ standard library for AVR (modm-io), header-only |
 | [`arm-gnu-toolchain`](https://gitlab.arm.com/tooling/gnu-toolchains-for-arm) | 15.3.rel2 | Arm's prebuilt bare-metal toolchain (arm-none-eabi) |
-| [`pico-sdk`](https://github.com/raspberrypi/pico-sdk) | 2.3.1 | Raspberry Pi Pico SDK as sources (no submodules); its toolchain and flags for RP2040/RP2350 |
+| [`pico-sdk`](https://github.com/raspberrypi/pico-sdk) | 2.3.1 | Raspberry Pi Pico SDK as sources with TinyUSB (no other submodules); its toolchain and flags for RP2040/RP2350 |
 | [`picotool`](https://github.com/raspberrypi/picotool) | 2.3.1 | Raspberry Pi's prebuilt picotool: UF2 output, signing, flashing |
 | [`pioasm`](https://github.com/raspberrypi/pico-sdk/tree/master/tools/pioasm) | 2.3.1 | Raspberry Pi's prebuilt PIO assembler |
 | [`freertos-kernel`](https://github.com/FreeRTOS/FreeRTOS-Kernel) | 11.3.1, 11.3.2 | FreeRTOS kernel as sources, built by the application with its own config and port |
@@ -99,7 +99,7 @@ Compile the Pico example
 ------------------------
 One blink for the Raspberry Pi Pico (RP2040) and Pico 2 (RP2350, ARM secure mode): the profile's
 arch picks the SDK platform and board. The compiler is Arm's `arm-gnu-toolchain` and `pico-sdk` comes
-as sources, without its submodules (no USB, no wireless); both from this index and pinned. The
+as sources with TinyUSB but without its other submodules (no wireless); both from this index and pinned. The
 profiles take them as `tool_requires`: the SDK's toolchain file then configures every CMake package
 built with them, so a library gets the SDK's compiler flags too.
 

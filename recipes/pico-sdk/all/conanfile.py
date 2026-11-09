@@ -1,7 +1,7 @@
 import os
 
 from conan import ConanFile
-from conan.tools.files import copy, get, save
+from conan.tools.files import copy, get, rmdir, save
 
 # The SDK's own toolchain file per core: its flags reach every package built for that core
 TOOLCHAINS = {
@@ -12,7 +12,7 @@ TOOLCHAINS = {
 
 class PicoSdkConan(ConanFile):
     name = "pico-sdk"
-    description = "The Raspberry Pi Pico SDK as sources, without its submodules (tinyusb, cyw43-driver, lwip, btstack, mbedtls)"
+    description = "The Raspberry Pi Pico SDK as sources with TinyUSB, without its other submodules (cyw43-driver, lwip, btstack, mbedtls)"
     license = "BSD-3-Clause"
     homepage = "https://github.com/raspberrypi/pico-sdk"
     package_type = "header-library"  # nothing is compiled here, see package_info()
@@ -24,6 +24,15 @@ class PicoSdkConan(ConanFile):
     def source(self):
         # url and sha256: a download that changed upstream fails instead of slipping in
         get(self, **self.conan_data["sources"][self.version], strip_root=True)
+        # TinyUSB where the SDK finds it by itself; only its rp2040 board support, which the RP2350 uses too
+        tinyusb = os.path.join(self.source_folder, "lib", "tinyusb")
+        get(self, **self.conan_data["tinyusb"][self.version], strip_root=True, destination=tinyusb)
+        for folder in ("examples", "docs", "test", os.path.join("hw", "mcu")):
+            rmdir(self, os.path.join(tinyusb, folder))
+        bsp = os.path.join(tinyusb, "hw", "bsp")
+        for family in os.listdir(bsp):
+            if family != "rp2040" and os.path.isdir(os.path.join(bsp, family)):
+                rmdir(self, os.path.join(bsp, family))
 
     def package(self):
         copy(self, "*", self.source_folder, os.path.join(self.package_folder, "sdk"))

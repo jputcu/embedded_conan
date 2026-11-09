@@ -2,3 +2,8 @@ sources:
   "2.3.1":
     url: "https://github.com/raspberrypi/pico-sdk/releases/download/2.3.1/pico-sdk-2.3.1.tar.gz"
     sha256: "4cd9f1f36feb34b6853ca866b5e0d977e3d344a361b9b7c94ae383693303591a"
+# The SDK's lib/tinyusb submodule at the commit each SDK version pins (USB stdio, device and host)
+tinyusb:
+  "2.3.1":
+    url: "https://github.com/hathach/tinyusb/archive/refs/tags/0.18.0.tar.gz"
+    sha256: "e7fa1bd723213749a0362c79eaccc99e84c8adea8f0a63588c4e4812608b7aa9"
